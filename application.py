@@ -41,10 +41,11 @@ def about():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     greeting = "This is the login page!"
+    title = "Login page"
     if session.get("users") is None:
          session["users"] = []
     if request.method == "POST":
         user = request.form.get("user")
         session["users"].append(user)
 
-    return render_template("login.html", users=session["users"])
+    return render_template("login.html", users=session["users"], title=title, greeting=greeting)
