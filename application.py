@@ -36,7 +36,8 @@ def bday():
 @app.route("/about")
 def about():
     greeting = "This is the 'about' page"
-    return render_template("about.html", greeting= greeting)
+    title = "About"
+    return render_template("about.html", greeting=greeting, title=title)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -45,7 +46,7 @@ def login():
     if session.get("users") is None:
          session["users"] = []
     if request.method == "POST":
-        user = request.form.get("user")
+        user = request.form.get("name")
         session["users"].append(user)
 
     return render_template("login.html", users=session["users"], title=title, greeting=greeting)
