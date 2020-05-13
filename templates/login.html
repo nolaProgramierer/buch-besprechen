@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body>
+      <h2>{{greeting}}</h2>
+
+      {% for user in users %}
+          <ul>
+            <li>{{user}}</li>
+          </ul>
+      {% endfor %}
+
+      <form action="" method="post">
+        <input type="text" name="user" placeholder="Your name here">
+        <button>Submit</button>
+      </form>
+  </body>
+</html>
