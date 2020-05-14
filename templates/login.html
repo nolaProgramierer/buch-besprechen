@@ -1,17 +1,11 @@
 {% extends "base.html" %}
 
 {%block login %}
-      <h2>{{greeting}}</h2>
+      <h2>{{greeting}} {{username}}</h2>
       <!--Iteratethrough users list-->
-      {% for user in users %}
-          <ul>
-            <li>{{user}}</li>
-          </ul>
-      {% endfor %}
 
-      <form action="" method="post">
+      <form action="http://localhost:5000/login" method="post">
         <input type="text" name="name" placeholder="Your name here">
-        <input type="password" name="password" placeholder="password">
         <button>Submit</button>
       </form>
 {% endblock %}

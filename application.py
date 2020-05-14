@@ -23,7 +23,8 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-    return "Project 1: TODO"
+    greeting = "This is the index page"
+    return render_template("index.html", greeting=greeting)
 
 @app.route("/glenn")
 def glenn():
@@ -41,12 +42,7 @@ def about():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    greeting = "This is the login page!"
-    title = "Login page"
-    if session.get("users") is None:
-         session["users"] = []
     if request.method == "POST":
         user = request.form.get("name")
-        session["users"].append(user)
-
-    return render_template("login.html", users=session["users"], title=title, greeting=greeting)
+        return render_template("main.html")
+    return render_template("login.html")
