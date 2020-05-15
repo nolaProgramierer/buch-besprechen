@@ -43,6 +43,23 @@ def about():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        user = request.form.get("name")
-        return render_template("main.html")
+        # Retrieve values from form
+        username = request.form.get("name")
+        password = request.form.get("password")
+        # Query db for name and password, if name and password match user is assigned a session
+        if db.execute("SELECT * FROM users WHERE name = :name", {"name": username}).rowcount == 0 or db.execute("SELECT * FROM users WHERE password = :password", {"password": password}).rowcount == 0:
+            message = "Incorrect name or password"
+            return render_template("error.html", message=message)
+        else:
+            message = f"Welcome back { username }."
+            return render_template("login.html", message=message)
+
     return render_template("login.html")
+            #session["username"] = user["name"]
+            #return render_template("main.html", greeting=greeting, name=name)
+
+
+@app.route("/users")
+def users():
+    users = db.execute("SELECT * FROM users").fetchall()
+    return render_template("users.html", users=users)
