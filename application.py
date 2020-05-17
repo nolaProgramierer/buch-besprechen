@@ -102,6 +102,14 @@ def book(book_id):
         return render_template("/error.html", message="No such book.")
     return render_template("/book.html", book=book)
 
+@app.route("/books/<int:book_id>", methods=["POST"])
+def review(book_id):
+    text = request.form.get("bookReview")
+    rating = request.form.get("inlineRadioOptions")
+    db.execute("INSERT INTO book_review (review, rating, book_id) VALUES (:review, :rating, :book_id)", {"review": text, "rating": rating, "book_id": book_id})
+    db.commit()
+    message = "Thank you for submitting your review"
+    return render_template("success.html", message=message)
 
 @app.route("/users")
 def users():
