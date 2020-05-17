@@ -79,6 +79,21 @@ def signout():
     message = "You've successfully logged out"
     return render_template("login.html", message=message)
 
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    if request.method == "POST":
+        a = "%"
+        input = request.form.get("search")
+        query = a + str(input) + a
+        results = db.execute("SELECT * FROM book WHERE isbn LIKE :isbn OR title LIKE :title OR author LIKE :author", {"isbn": query, "title": query, "author": query})
+        if results.rowcount == 0:
+            message="There are no results in our database"
+            return render_template("/search.html", message=message)
+        else:
+            return render_template("/search.html", results=results)
+    else:
+        return render_template("/search.html")
+
 @app.route("/users")
 def users():
     users = db.execute("SELECT * FROM users").fetchall()
