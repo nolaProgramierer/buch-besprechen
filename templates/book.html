@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+
+{% block title %}Book{% endblock %}
+
+{% block body %}
+<h2>Book details</h2>
+<div id=bookInfo>
+  <ul>
+    <li>ISBN: {{book.isbn}}</li>
+    <li>Title: {{book.title}}</li>
+    <li>Author: {{book.author}}</li>
+    <li>Year: {{book.year}}</li>
+  </ul>
+</div>
+{% endblock %}
