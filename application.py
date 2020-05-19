@@ -104,12 +104,25 @@ def book(book_id):
 
 @app.route("/books/<int:book_id>", methods=["POST"])
 def review(book_id):
+    # fix this with session username in index function
+    
+        username = session['username']
+
+    if db.execute("SELECT * FROM book_review WHERE book_id = :book_id", {"book_id": book_id}).rowcount != 0 and db.execute("SELECT * FROM book_review WHERE users_id = :users_id", {"users_id": username_id}).rowcount != 0:
+        return render_template("/error.html", message="You've already submitted a review for this book.")
+
     text = request.form.get("bookReview")
     rating = request.form.get("inlineRadioOptions")
-    db.execute("INSERT INTO book_review (review, rating, book_id) VALUES (:review, :rating, :book_id)", {"review": text, "rating": rating, "book_id": book_id})
+    db.execute("INSERT INTO book_review (review, rating, book_id, users_id) VALUES (:review, :rating, :book_id, :users_id)", {"review": text, "rating": rating, "book_id": book_id, "users_id": users_id})
     db.commit()
     message = "Thank you for submitting your review"
     return render_template("success.html", message=message)
+
+
+
+
+
+
 
 @app.route("/users")
 def users():
