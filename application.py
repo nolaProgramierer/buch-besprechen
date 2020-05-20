@@ -1,4 +1,5 @@
 import os
+import requests
 
 from flask import Flask, session, render_template, request
 from flask_session import Session
@@ -100,7 +101,21 @@ def book(book_id):
     book = db.execute("SELECT * FROM book WHERE id = :id", {"id": book_id}).fetchone()
     if book is None:
         return render_template("/error.html", message="No such book.")
-    return render_template("/book.html", book=book)
+    isbn = book.isbn
+    # put this somewhere secure
+    key = "5OcycK0BLM1pY3pTVqaUKQ"
+
+    res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": isbn})
+    bookObj = res.json()
+    try:
+        for val in bookObj["books"]:
+            rating = val["average_rating"]
+            count = val["work_ratings_count"]
+            print(rating)
+            print(count)
+    except (ValueError, KeyError, TypeErrort):
+        print("JSON format error")
+    return render_template("/book.html", book=book, isbn=isbn, rating=rating, count=count)
 
 @app.route("/books/<int:book_id>", methods=["POST"])
 def review(book_id):
