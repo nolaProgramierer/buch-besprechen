@@ -13,10 +13,8 @@
   </ul>
 </div>
 <div id="apiRating">
-  <h6>GoodRead ratings: {{rating}}</h6>
-  <h6>GoodRead rating count: {{count}}<h6>
-    {{book.isbn}}
-    {{isbn}}
+  <h6>GoodReads ratings: {{rating}}</h6>
+  <h6>GoodReads rating count: {{count}}<h6>
 </div>
 
 <form action="{{ url_for('review', book_id=book.id) }}" method="post">

@@ -95,12 +95,13 @@ def books():
     else:
         return render_template("/books.html")
 
+# Display information on each individual book
 @app.route("/books/<int:book_id>")
 def book(book_id):
     # Get book by id number
     book = db.execute("SELECT * FROM book WHERE id = :id", {"id": book_id}).fetchone()
-    if book is None:
-        return render_template("/error.html", message="No such book.")
+    if book.id is None:
+        return render_template("/error.html", message="No such book.", book=book)
     isbn = book.isbn
     # put this somewhere secure
     key = "5OcycK0BLM1pY3pTVqaUKQ"
@@ -117,6 +118,7 @@ def book(book_id):
         print("JSON format error")
     return render_template("/book.html", book=book, isbn=isbn, rating=rating, count=count)
 
+# Add review for each book
 @app.route("/books/<int:book_id>", methods=["POST"])
 def review(book_id):
     # Retrieve id of user from db
