@@ -137,6 +137,35 @@ def review(book_id):
     message = "Thank you for submitting your review"
     return render_template("success.html", message=message)
 
+@app.route("/api", methods=["GET", "POST"])
+def api():
+    if request.method == "POST":
+        # Get json object
+        book_num = request.form.get("bookApi")
+        # Put this somewhere safe
+        key = "5OcycK0BLM1pY3pTVqaUKQ"
+        res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": key, "isbns": book_num})
+        bookObj = res.json()
+        # Extract isbn from returned json object to vars
+        isbn = bookObj["books"][0]["isbn"]
+        isbn13 = bookObj["books"][0]["isbn13"]
+        # Check db for isbns
+        if db.execute("SELECT * FROM book WHERE isbn = :isbn", {"isbn": isbn}).rowcount == 0 and db.execute("SELECT * FROM book WHERE isbn = :isbn", {"isbn": isbn13}).rowcount == 0:
+            return render_template("/error.html", message="404 error")
+
+        # Make new json obj with information from db and api request
+        review_count = bookObj["books"][0]["reviews_count"]
+        average_score = bookObj["books"][0]["average_rating"]
+        book = db.execute("SELECT * FROM book WHERE isbn = :isbn", {"isbn": isbn}) or db.execute("SELECT * FROM book WHERE isbn = :isbn", {"isbn": isbn13})
+        for row in book:
+            title = row.title
+            author = row.author
+            year = row.year
+            isbn = row.isbn
+        jsonDict = {"title":title, "author":author, "year":year, "isbn":isbn, "review_count": review_count, "average_score":average_score}
+        return render_template("/api.html", message=jsonDict)
+    return render_template("/api.html")
+
 @app.route("/users")
 def users():
     users = db.execute("SELECT * FROM users").fetchall()
