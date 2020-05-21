@@ -74,6 +74,9 @@ def signup():
 
 @app.route("/logout")
 def signout():
+    if session["username"] is None:
+        message="Please login"
+        return render_template("error.html", message=message)
     username = session["username"]
     #Remove user from user session, if user isn't signed in redirected to login page
     session.pop(username, None)
