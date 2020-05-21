@@ -4,14 +4,14 @@
 
 {% block body %}
 <h3>{{message}}</h3>
-<form action="{{ url_for('search')}}" method="post">
+<form action="/signup" method="post">
   <div class="form-group">
     <label for="exampleInputEmail1">Email address</label>
-    <input type="text" class="form-control" id="NameInput" name = "name" aria-describedby="emailHelp" placeholder="Enter name">
+    <input type="text" class="form-control" id="NameInput" name ="name" aria-describedby="emailHelp" placeholder="Enter name">
   </div>
   <div class="form-group">
     <label for="InputPassword">Password</label>
-    <input type="password" class="form-control" id="PasswordInput" name = "password" placeholder="Password">
+    <input type="password" class="form-control" id="PasswordInput" name ="password" placeholder="Password">
   </div>
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>

@@ -70,7 +70,7 @@ def signup():
             session["username"] = username
             return render_template("index.html", message=message)
     message = "Welcome to the Sign Up page"
-    return render_template("/signup.html", message = message)
+    return render_template("/signup.html", message=message)
 
 @app.route("/logout")
 def signout():

@@ -1,4 +1,4 @@
-{% extends layout.html %}
+{% extends "layout.html" %}
 
 {% block title %}
   Users page
@@ -7,7 +7,7 @@
 {% block body %}
   {% for user in users %}
   <ul>
-    <li>{{user}}</li>
+    <li>{{user.name}}</li>
   </ul>
   {% endfor %}
 {% endblock %}
